@@ -1,0 +1,70 @@
+pkgname=supysonic
+pkgver=0.3.495.g92fed40
+pkgrel=1
+pkgdesc="A Python implementation of the Subsonic server API."
+arch=('any')
+url="https://github.com/spl0k/$pkgname"
+license=('AGPL')
+depends=( 
+  'python-flask'
+  'python-pony'
+  'python-pillow'
+  'python-requests'
+  'python-mutagen'
+  'python-zipstream'
+)
+makedepends=(
+  'git'
+  'python-setuptools'
+  'python-pip'
+)
+optdepends=('python-watchdog: Watch for library changes using supysonic-watcher'
+            'ffmpeg: transcoder support')
+source=("${pkgname}::git+https://github.com/spl0k/$pkgname"
+        "$pkgname.ini"
+        "$pkgname.service"
+        "$pkgname.sysusers"
+        'nginx.conf'
+        'uwsgi.ini')
+sha256sums=('SKIP'
+            '8f52e93cd4f13e2e555b5ac4e456020b4395bf311b0226d9d50b13444721872d'
+            'e3be2056c28b8a59873ea1bca664833359b15f51291bd5818404e76b95579e03'
+            'b4b723d30fb45f86a15ec218910cd3935aac4546d5e2f9a1e1bc79cccfb98480'
+            'adb3f3e286fe4e87477452022189b81c2b06a7fbd0fc2623c28b5624696aaa0b'
+            '751b82f08312594862827954f714fc27438c76958c74ee29a1788237a8c107e3')
+backup=("etc/$pkgname")
+
+pkgver() {
+  cd $pkgname
+  echo "$(grep '^VERSION =' $pkgname/__init__.py|head -n1|cut -d\' -f2).$(git rev-list --count HEAD).g$(git describe --always)"
+}
+
+prepare() {
+  cd $pkgname
+  cp "cgi-bin/$pkgname.wsgi" $pkgname/wsgi.py
+}
+
+build() {
+  cd $pkgname
+  python setup.py build
+}
+
+package() {
+  cd $pkgname
+  python setup.py install --root="$pkgdir/" --optimize=1 --skip-build
+
+  install -Dm664 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm664 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
+  install -m664 -t "$pkgdir/usr/share/doc/$pkgname" docs/*.md
+
+  cd $srcdir
+  install -Dm664 "$pkgname.ini" "$pkgdir/etc/$pkgname"
+  install -Dm664 "uwsgi.ini" \
+    "$pkgdir/etc/uwsgi/$pkgname.ini"
+  install -Dm664 "$pkgname.service" \
+    "$pkgdir/usr/lib/systemd/system/$pkgname.service"
+  install -Dm664 "supysonic.sysusers" \
+    "$pkgdir/usr/lib/sysusers.d/$pkgname.conf"
+  install -Dm664 nginx.conf \
+    "$pkgdir/etc/nginx/sites-available/$pkgname"
+}

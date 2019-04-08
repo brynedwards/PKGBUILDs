@@ -1,0 +1,12 @@
+[Unit]
+Description=supysonic service unit
+Requires=uwsgi@supysonic.service
+
+[Service]
+Type=oneshot
+ExecReload=/usr/bin/systemctl reload uwsgi@supysonic.service
+ExecStop=/usr/bin/systemctl stop uwsgi@supysonic.service
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
