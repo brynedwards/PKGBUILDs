@@ -31,7 +31,7 @@ sha256sums=('SKIP'
             'e3be2056c28b8a59873ea1bca664833359b15f51291bd5818404e76b95579e03'
             'b4b723d30fb45f86a15ec218910cd3935aac4546d5e2f9a1e1bc79cccfb98480'
             'adb3f3e286fe4e87477452022189b81c2b06a7fbd0fc2623c28b5624696aaa0b'
-            '51c19b92340cada34f8a117e78193366b7cdf480a5a5d6c28f95c31bddd9fb8d')
+            '00a679260505962603f2e4f2bcf9a92ac8c0f07743a205f8cc3a5c9dbad68dc2')
 backup=("etc/$pkgname")
 
 pkgver() {
@@ -41,7 +41,7 @@ pkgver() {
 
 prepare() {
   cd $pkgname
-  cp "cgi-bin/$pkgname.wsgi" $pkgname/wsgi.py
+  cp "cgi-bin/$pkgname.wsgi" $pkgname/app.py
 }
 
 build() {
