@@ -29,7 +29,7 @@ source=("${pkgname}::git+https://github.com/spl0k/$pkgname"
 sha256sums=('SKIP'
             '8f52e93cd4f13e2e555b5ac4e456020b4395bf311b0226d9d50b13444721872d'
             'e3be2056c28b8a59873ea1bca664833359b15f51291bd5818404e76b95579e03'
-            '6ea0dffbf75b167f3164026cddb47111e60af60220eb33c91136a6bb1534d76c'
+            'b4b723d30fb45f86a15ec218910cd3935aac4546d5e2f9a1e1bc79cccfb98480'
             'adb3f3e286fe4e87477452022189b81c2b06a7fbd0fc2623c28b5624696aaa0b'
             '21943b10eae0b23f437ccf6ebcfe72f3c3ec9132f063849ae0b215c79f101616')
 backup=("etc/$pkgname")
